@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>EquiSplit - Cyber Tech Bill & Tip Splitter</title>
+  <meta name="description" content="A futuristic, mathematically exact bill and tip splitter with penny balancing, receipt preview proof, and zero external dependencies.">
+  <!-- Offline Pure CSS stylesheet (No CDN, no external dependencies) -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. Tech Animated Moving Background, Cyber Grid & Ambient Glowing Orbs
+       ========================================================================= -->
+  <div class="animated-bg" aria-hidden="true"></div>
+  <div class="cyber-grid" aria-hidden="true"></div>
+  <div class="ambient-orb orb-1" aria-hidden="true"></div>
+  <div class="ambient-orb orb-2" aria-hidden="true"></div>
+
+  <!-- =========================================================================
+       2. Top Bar Navigation (Clean Responsive Header)
+       ========================================================================= -->
+  <header class="top-bar">
+    <a href="#" class="brand-title" title="EquiSplit - Cyber Bill Splitter">
+      <span class="brand-icon">➗</span>
+      <span>EquiSplit<span style="color: var(--accent-cyan); font-size: 0.85em;">.io</span></span>
+    </a>
+
+    <div class="header-center-info">
+      <span>Student Project</span>
+      <span class="header-separator">·</span>
+      <span>100% Offline & Private</span>
+      <span class="header-separator">·</span>
+      <span>Penny-Exact Math</span>
+    </div>
+
+    <div class="header-actions">
+      <!-- Dark / Light Theme Toggle -->
+      <button type="button" id="themeToggleBtn" class="btn-ghost edge-lit" title="Toggle Theme" aria-label="Toggle Theme">
+        <span id="themeIcon">🌙</span>
+        <span id="themeLabel">Dark</span>
+      </button>
+
+      <!-- Audio Feedback Toggle -->
+      <button type="button" id="soundToggleBtn" class="btn-ghost edge-lit" title="Toggle audio feedback" aria-label="Toggle Sound">
+        <span id="soundIcon">🔊</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       3. Main Application Container
+       ========================================================================= -->
+  <main class="app-container">
+
+    <!-- Page Title & Header Section -->
+    <section class="page-intro">
+      <h1 class="page-title">Fair Bill & Tip Splitter</h1>
+      <p class="page-subtitle">
+        Split restaurant bills, drinks, and group expenses with mathematical precision. Every penny is accounted for with zero floating-point discrepancies.
+      </p>
+    </section>
+
+    <!-- Main 2-Column Responsive Workspace Grid -->
+    <div class="main-grid">
+
+      <!-- LEFT COLUMN: Input Form Controls -->
+      <section class="glass-card left-column" aria-labelledby="formHeading">
+        <div class="card-header">
+          <h2 id="formHeading" class="card-title">
+            <span>📝</span>
+            <span>Bill & Venue Details</span>
+          </h2>
+          <span class="card-subtitle-note">Enter bill info</span>
+        </div>
+
+        <!-- Form for Inputs -->
+        <form id="splitForm" novalidate autocomplete="off">
+
+          <!-- 1. Shop / Venue / Occasion Name Input -->
+          <div class="form-group">
+            <label for="occasionInput" class="form-label">
+              <span class="form-label-title">Shop / Venue / Occasion Name <span class="required-star">*</span></span>
+            </label>
+            <input 
+              type="text" 
+              id="occasionInput" 
+              class="form-input-standalone edge-lit" 
+              placeholder="e.g. 🍕 Mario's Pizzeria, Café Central, Beach Trip"
+              value="Mario's Italian Bistro"
+              required
+            >
+            <!-- Quick Chips for Occasions -->
+            <div class="quick-chips-wrapper" aria-label="Quick venue presets">
+              <button type="button" class="chip-btn occasion-chip" data-occasion="🍕 Mario's Pizza">🍕 Pizza</button>
+              <button type="button" class="chip-btn occasion-chip" data-occasion="☕ Café Central">☕ Café</button>
+              <button type="button" class="chip-btn occasion-chip" data-occasion="🏖️ Weekend Trip">🏖️ Trip</button>
+              <button type="button" class="chip-btn occasion-chip" data-occasion="🛒 Apartment Groceries">🛒 Groceries</button>
+              <button type="button" class="chip-btn occasion-chip" data-occasion="🎬 Movie & Snacks">🎬 Movies</button>
+            </div>
+          </div>
+
+          <!-- 2. Bill Amount Input with Currency Selection -->
+          <div class="form-group">
+            <label for="billInput" class="form-label">
+              <span class="form-label-title">Total Bill Amount <span class="required-star">*</span></span>
+            </label>
+            <div class="input-with-affix">
+              <select id="currencySelect" class="currency-select" aria-label="Select currency">
+                <option value="$">$ (USD)</option>
+                <option value="₹">₹ (INR)</option>
+                <option value="€">€ (EUR)</option>
+                <option value="£">£ (GBP)</option>
+                <option value="¥">¥ (JPY)</option>
+                <option value="C$">C$ (CAD)</option>
+                <option value="A$">A$ (AUD)</option>
+                <option value="₱">₱ (PHP)</option>
+                <option value="₩">₩ (KRW)</option>
+              </select>
+              <input 
+                type="number" 
+                id="billInput" 
+                class="form-input" 
+                placeholder="0.00" 
+                step="0.01" 
+                min="0.01"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- 3. Number of People Input with Touch Steppers -->
+          <div class="form-group">
+            <label for="peopleInput" class="form-label">
+              <span class="form-label-title">Number of People <span class="required-star">*</span></span>
+            </label>
+            <div class="stepper-container">
+              <button type="button" id="decrementPeopleBtn" class="stepper-btn" aria-label="Decrease people count">−</button>
+              <input 
+                type="number" 
+                id="peopleInput" 
+                class="form-input people-input" 
+                value="4" 
+                min="1" 
+                step="1"
+                required
+              >
+              <button type="button" id="incrementPeopleBtn" class="stepper-btn" aria-label="Increase people count">+</button>
+            </div>
+            <!-- Quick Chips for Group Size -->
+            <div class="quick-chips-wrapper" aria-label="Quick group size options">
+              <button type="button" class="chip-btn people-chip" data-count="2">2 Friends</button>
+              <button type="button" class="chip-btn people-chip" data-count="3">3 Friends</button>
+              <button type="button" class="chip-btn people-chip active" data-count="4">4 Friends</button>
+              <button type="button" class="chip-btn people-chip" data-count="5">5 Friends</button>
+              <button type="button" class="chip-btn people-chip" data-count="6">6 Friends</button>
+              <button type="button" class="chip-btn people-chip" data-count="8">8 Friends</button>
+            </div>
+          </div>
+
+          <!-- 4. Tip Selection Section -->
+          <div class="form-group">
+            <label class="form-label">
+              <span class="form-label-title">Tip / Gratuity Option</span>
+            </label>
+            <div class="tip-selector-grid">
+              <button type="button" class="tip-btn" data-tip="0">0%</button>
+              <button type="button" class="tip-btn" data-tip="5">5%</button>
+              <button type="button" class="tip-btn" data-tip="10">10%</button>
+              <button type="button" class="tip-btn active" data-tip="15">15%</button>
+              <button type="button" class="tip-btn" data-tip="18">18%</button>
+              <button type="button" class="tip-btn" data-tip="20">20%</button>
+              <button type="button" class="tip-btn" data-tip="25">25%</button>
+              <button type="button" id="customTipToggle" class="tip-btn" style="color: var(--text-accent);">Custom ✎</button>
+            </div>
+
+            <!-- Custom Tip Input Box -->
+            <div id="customTipInputBox" class="custom-tip-input-box">
+              <input 
+                type="number" 
+                id="customTipInput" 
+                placeholder="Enter custom tip" 
+                min="0" 
+                step="0.01"
+              >
+              <button type="button" id="customTipTypeBtn" class="custom-tip-type-btn edge-lit">
+                Percent (%)
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. Friend Names Customization & Upfront Payer Accordion -->
+          <div class="options-panel">
+            <div id="optionsToggleBtn" class="options-panel-header" role="button" tabindex="0" aria-expanded="false">
+              <div class="options-panel-title">
+                <span>👥</span>
+                <span>Customize Friend Names & Who Paid</span>
+              </div>
+              <span id="optionsIcon" class="options-panel-icon">▼</span>
+            </div>
+
+            <div id="optionsContent" class="options-content">
+              <!-- Who paid upfront -->
+              <div class="payer-select-group">
+                <label for="payerSelect" class="form-label">
+                  <span class="form-label-title">Who paid the bill upfront?</span>
+                </label>
+                <div class="input-with-affix">
+                  <span style="padding: 0 0.85rem; color: var(--accent-cyan); font-size: 1.1rem;">👑</span>
+                  <select id="payerSelect" class="form-input" style="background: transparent; color: var(--text-main); cursor: pointer;">
+                    <!-- Dynamically populated -->
+                  </select>
+                </div>
+              </div>
+
+              <!-- Names Grid -->
+              <label class="form-label">
+                <span class="form-label-title">Friend Names:</span>
+              </label>
+              <div id="personNamesGrid" class="person-names-grid">
+                <!-- Dynamically rendered based on people count -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Validation Error Alert Banner (Requirement 4) -->
+          <div id="errorContainer" class="error-container" role="alert">
+            <div class="error-icon">⚠️</div>
+            <div class="error-text-wrap">
+              <div id="errorTitle" class="error-title">Invalid Input</div>
+              <div id="errorDesc" class="error-desc">Please enter a valid bill amount and group size.</div>
+            </div>
+          </div>
+
+          <!-- Primary Action Buttons -->
+          <div class="actions-row">
+            <button type="button" id="calculateBtn" class="btn-primary edge-lit">
+              <span>⚡</span>
+              <span>Calculate Split</span>
+            </button>
+            <button type="button" id="resetBtn" class="btn-secondary edge-lit" title="Reset all fields">
+              <span>🔄</span>
+              <span>Reset</span>
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- RIGHT COLUMN: Results Display & Shares Breakdown -->
+      <section class="glass-card right-column" id="resultsSection" aria-labelledby="resultsHeading">
+        <div class="card-header">
+          <h2 id="resultsHeading" class="card-title">
+            <span>📊</span>
+            <span>Split Summary</span>
+          </h2>
+          <span class="card-subtitle-note">Individual shares & settlement</span>
+        </div>
+
+        <!-- Empty State (Shown before calculation or after error) -->
+        <div id="emptyResultsState" class="empty-results-state">
+          <div class="empty-icon-box">🧾</div>
+          <h3 class="empty-title">Ready to Calculate</h3>
+          <p class="empty-text">
+            Enter your bill amount, group size, and click <strong>Calculate Split</strong> to view exact shares.
+          </p>
+        </div>
+
+        <!-- Calculated Results Content -->
+        <div id="resultsContent" class="results-content">
+
+          <!-- Occasion Strip -->
+          <div class="occasion-display-strip">
+            <span id="resOccasion" class="occasion-name-text">Mario's Italian Bistro</span>
+            <span id="resDate" class="occasion-date-text">Just now</span>
+          </div>
+
+          <!-- Per Person Hero Highlight Card -->
+          <div class="per-person-hero-card">
+            <div class="per-person-hero-label">Each Person Pays</div>
+            <div id="resHeroShare" class="per-person-hero-val">$0.00</div>
+            <div id="resHeroShareSub" class="per-person-hero-sub">Split evenly across friends</div>
+          </div>
+
+          <!-- Exact Penny Allocation Guarantee Badge (Requirement 3) -->
+          <div id="exactMatchBadge" class="exact-match-badge">
+            <span class="exact-match-icon">✓</span>
+            <span id="exactMatchText"><strong>Exact Balance Guaranteed:</strong> The sum of individual shares adds up precisely to the total bill.</span>
+          </div>
+
+          <!-- Key Metrics Cards -->
+          <div class="metrics-row">
+            <div class="metric-card">
+              <div class="metric-label">Original Bill</div>
+              <div id="resBillAmount" class="metric-value">$0.00</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Tip Added</div>
+              <div id="resTipAmount" class="metric-value">$0.00</div>
+              <div id="resTipSub" class="metric-sub">(15%)</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Grand Total</div>
+              <div id="resGrandTotal" class="metric-value">$0.00</div>
+            </div>
+          </div>
+
+          <!-- View Switcher Tabs: Table Breakdown vs Graphical Disc Chart -->
+          <div class="view-toggle-row" role="tablist" aria-label="Result View Mode">
+            <button type="button" id="tabTableView" class="view-toggle-btn active" role="tab" aria-selected="true">
+              <span>📋</span> Table View
+            </button>
+            <button type="button" id="tabDiscChart" class="view-toggle-btn" role="tab" aria-selected="false">
+              <span>🍩</span> Disc Chart
+            </button>
+          </div>
+
+          <!-- 1. Table Breakdown View -->
+          <div id="sharesTableView" class="shares-list-section">
+            <div class="shares-list-header">
+              <span>Person & Settlement</span>
+              <span>Exact Share</span>
+            </div>
+            <table class="shares-table">
+              <tbody id="sharesTableBody">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 2. Graphical Disc / Donut Chart View (100% Offline Canvas) -->
+          <div id="sharesDiscView" class="shares-disc-section" style="display: none;">
+            <div class="disc-chart-wrapper">
+              <div class="canvas-relative-container">
+                <canvas id="discCanvas" width="260" height="260" aria-label="Visual disc graph of bill split"></canvas>
+                <div class="disc-center-badge">
+                  <div class="disc-center-val" id="discCenterTotal">$0.00</div>
+                  <div class="disc-center-lbl">TOTAL BILL</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Disc Proportional Legend -->
+            <div id="discLegend" class="disc-legend-grid">
+              <!-- Dynamically populated shares with colored indicators & percentages -->
+            </div>
+
+            <!-- Subtotal vs Tip Visual Ratio Bar -->
+            <div class="ratio-bar-box">
+              <div class="ratio-bar-header">
+                <span>Bill vs Tip Ratio:</span>
+                <span id="ratioBarSummary">85% Bill · 15% Tip</span>
+              </div>
+              <div class="ratio-progress-track">
+                <div id="ratioBillBar" class="ratio-bar-fill bill-fill" style="width: 85%;"></div>
+                <div id="ratioTipBar" class="ratio-bar-fill tip-fill" style="width: 15%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Toolbar for Results -->
+          <div class="results-toolbar">
+            <!-- Receipt Preview & Print Button -->
+            <button type="button" id="previewReceiptBtn" class="btn-primary edge-lit" title="Preview proof of split receipt before printing">
+              <span>🧾</span>
+              <span>Preview & Print Receipt</span>
+            </button>
+            <button type="button" id="copySummaryBtn" class="btn-secondary edge-lit" title="Copy breakdown text to clipboard">
+              <span>📋</span>
+              <span>Copy for Group Chat</span>
+            </button>
+            <button type="button" id="saveSplitBtn" class="btn-secondary edge-lit" title="Save this calculation to local history">
+              <span>💾</span>
+              <span>Save to History</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- =======================================================================
+         4. Saved History Section (Persistent storage across reloads)
+         ======================================================================= -->
+    <section class="history-section">
+      <div class="history-card">
+        <div class="history-header">
+          <h2 class="history-title">
+            <span>🕒</span>
+            <span>Saved Splits History</span>
+          </h2>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <input 
+              type="text" 
+              id="historySearchInput" 
+              class="history-search-input edge-lit" 
+              placeholder="🔍 Search history..."
+              aria-label="Search saved splits"
+            >
+            <button type="button" id="clearHistoryBtn" class="btn-ghost" style="color: #f87171; display: none;">
+              Clear All
+            </button>
+          </div>
+        </div>
+        <div id="historyList" class="history-list">
+          <!-- Dynamically populated saved calculations -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       5. Interactive Receipt Preview Modal (Proof of Split with Shop & Time)
+       ========================================================================= -->
+  <div id="receiptModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="receiptModalTitle">
+    <div class="receipt-modal-box">
+      <!-- Modal Header -->
+      <div class="modal-top-bar">
+        <h3 id="receiptModalTitle" class="modal-title">
+          <span>🧾</span>
+          <span>Proof of Split Receipt Preview</span>
+        </h3>
+        <button type="button" id="closeReceiptModalBtn" class="modal-close-btn" aria-label="Close Preview">✕</button>
+      </div>
+
+      <!-- High-Tech Physical Digital Receipt Slip -->
+      <div class="receipt-paper" id="printableReceiptArea">
+        <div class="receipt-shop-name" id="receiptShopName">MARIO'S ITALIAN BISTRO</div>
+        <div class="receipt-slip-meta">
+          <div>OFFICIAL BILL SPLIT RECEIPT</div>
+          <div id="receiptDateTime">Date: Oct 4, 2026 · 10:24 PM</div>
+          <div id="receiptSlipId">REF: #EQS-8921-9402</div>
+        </div>
+
+        <hr class="receipt-divider">
+
+        <div class="receipt-row">
+          <span>Subtotal (Bill)</span>
+          <span id="receiptSubtotal">$120.00</span>
+        </div>
+        <div class="receipt-row">
+          <span id="receiptTipLabel">Tip Added (15%)</span>
+          <span id="receiptTip">$18.00</span>
+        </div>
+
+        <hr class="receipt-divider">
+
+        <div class="receipt-row bold">
+          <span>GRAND TOTAL</span>
+          <span id="receiptGrandTotal">$138.00</span>
+        </div>
+        <div class="receipt-row" style="font-size: 0.8rem; color: var(--accent-cyan); margin-top: 0.25rem;">
+          <span>Settled Upfront By:</span>
+          <span id="receiptPayer">Friend 1</span>
+        </div>
+
+        <hr class="receipt-divider">
+
+        <div style="font-size: 0.82rem; font-weight: 700; margin-bottom: 0.4rem; text-transform: uppercase;">
+          Itemized Shares Breakdown:
+        </div>
+        <div class="receipt-friends-list" id="receiptFriendsList">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="receipt-seal">
+          ✓ MATHEMATICAL INTEGRITY VERIFIED · EXACT TO THE CENT
+        </div>
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="modal-actions">
+        <button type="button" id="modalPrintBtn" class="btn-primary edge-lit" style="flex: 1;">
+          <span>🖨️</span>
+          <span>Print Document</span>
+        </button>
+        <button type="button" id="modalCopyBtn" class="btn-secondary edge-lit">
+          <span>📋</span>
+          <span>Copy Slip</span>
+        </button>
+        <button type="button" id="modalCloseBtn" class="btn-ghost">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       6. Mobile Ergonomic Floating Bar
+       ========================================================================= -->
+  <div id="mobileFloatingBar" class="mobile-floating-bar" role="region" aria-label="Mobile quick summary">
+    <div class="mobile-floating-bar-content">
+      <div class="mobile-floating-info">
+        <span class="mobile-floating-label">Each Person Pays</span>
+        <span id="mobileFloatingAmount" class="mobile-floating-amount">$0.00</span>
+      </div>
+      <button type="button" id="mobileJumpBtn" class="mobile-floating-action-btn">
+        View Breakdown ↓
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       7. Floating Toast Notification Banner
+       ========================================================================= -->
+  <div id="toastNotice" class="toast-notice" role="status" aria-live="polite">
+    <span id="toastMsg">Notification message</span>
+  </div>
+
+  <!-- Pure Vanilla JavaScript Script (100% Offline, Zero external dependencies) -->
+  <script src="./script.js"></script>
+</body>
+</html>
