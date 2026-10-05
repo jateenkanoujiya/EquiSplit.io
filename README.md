@@ -1,85 +1,84 @@
+EquiSplit.io
+EquiSplit.io is a simple and intuitive web application designed to make splitting bills among multiple people quick and convenient. Users can enter the total bill amount and the number of people sharing the expense, and the application calculates the amount payable by each person.
 
+Features
+Calculate the amount payable per person
 
-EquiSplit.io 💸
-EquiSplit.io is a simple bill-splitting web app made to make those "bhai tu kitna dega?" moments a little easier.
+Simple and intuitive user interface
 
-Just enter the total bill and the number of people, and EquiSplit calculates how much each person needs to pay.
+Instant calculation without page reloads
 
-✨ Features
-Enter the total bill amount
+Responsive design for different screen sizes
 
-Enter the number of people
+Lightweight and fast
 
-Calculate each person's share instantly
+No backend or installation required
 
-Simple and clean interface
+Technologies Used
+HTML5 – Application structure
 
-Works directly in the browser
+CSS3 – Styling, layout, and responsive design
 
-No login or setup required
+JavaScript – Calculation logic and user interactions
 
-🛠️ Built With
-HTML – for the structure
+How It Works
+The application uses the following calculation:
 
-CSS – for the design and layout
+Amount per Person = Total Bill Amount / Number of People
+For example, if the total bill is ₹2,000 and four people are sharing the expense:
 
-JavaScript – for the calculations and functionality
-
-🚀 Getting Started
-You don't need to install anything to run EquiSplit.io.
-
-Clone the repository:
-
+₹2,000 / 4 = ₹500 per person
+Getting Started
+Clone the Repository
 git clone https://github.com/your-username/equisplit.io.git
-Then open index.html in your browser.
+Run the Application
+Navigate to the project directory and open index.html in any modern web browser.
 
-That's it.
+No additional dependencies, packages, or server configuration are required.
 
-💡 How It Works
-It's pretty straightforward.
-
-Enter the total bill and the number of people splitting it.
-
-For example:
-
-Total Bill: ₹2000
-People: 4
-
-Each Person Pays: ₹500
-EquiSplit handles the calculation so you don't have to do the math yourself.
-
-📁 Project Structure
+Project Structure
 EquiSplit.io/
 │
 ├── index.html
 ├── style.css
 ├── script.js
 └── README.md
-🎯 Why I Built This
-This project was built as a small web development project to practice HTML, CSS, and JavaScript while creating something that can actually be useful in everyday situations.
+Use Cases
+EquiSplit.io can be used for:
 
-It's especially handy for things like restaurant bills, trips, group outings, or just splitting expenses with friends.
+Restaurant and dining bills
 
-🔮 Future Plans
-Some things that could be added later:
+Group outings
+
+Travel expenses
+
+Shared household expenses
+
+Events and group activities
+
+Other shared payments
+
+Future Improvements
+Potential improvements include:
 
 Tip and tax calculation
 
-Custom amounts for each person
+Support for multiple currencies
 
-Multiple currency support
+Custom contribution amounts for individuals
 
-Expense history
+Expense history and local storage
+
+Bill summary sharing
 
 Dark mode
 
-Better mobile experience
+Enhanced mobile support
 
-Shareable bill summary
+License
+This project is open source and available for personal and educational use.
 
-📄 License
-This project is open source and free to use.
-
-Made with ❤️ using HTML, CSS & JavaScript.
+EquiSplit.io
+A simple solution for splitting shared expenses.
 
 
